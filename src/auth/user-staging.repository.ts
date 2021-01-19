@@ -13,10 +13,11 @@ export class UserStagingRepository extends Repository<UserStagingEntity> {
   async signUpVerification(
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<boolean> {
-    const { username, password } = authCredentialsDto;
+    const { username, password, fullName } = authCredentialsDto;
 
     const salt = await bcrypt.genSalt();
     const user = new UserStagingEntity();
+    user.fullName = fullName;
     user.username = username;
     user.salt = salt;
     user.password = await this.hashPassword(password, salt);

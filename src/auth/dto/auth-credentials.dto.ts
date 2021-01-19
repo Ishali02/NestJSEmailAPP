@@ -4,9 +4,14 @@ import {
   MaxLength,
   Matches,
   IsEmail,
+  IsOptional,
 } from 'class-validator';
 
 export class AuthCredentialsDto {
+  @IsString()
+  @IsOptional()
+  fullName: string;
+
   @IsEmail()
   @MinLength(4)
   @MaxLength(50)

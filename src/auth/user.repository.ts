@@ -15,6 +15,7 @@ export class UserRepository extends Repository<User> {
   async signUpComplete(userStaging: UserStagingEntity): Promise<boolean> {
     if (userStaging) {
       const user = new User();
+      user.fullName = userStaging.fullName;
       user.username = userStaging.username;
       user.password = userStaging.password;
       user.salt = userStaging.salt;

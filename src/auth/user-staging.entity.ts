@@ -14,6 +14,9 @@ export class UserStagingEntity extends BaseEntity {
   id: number;
 
   @Column()
+  fullName: string;
+
+  @Column()
   username: string;
 
   @Column()
