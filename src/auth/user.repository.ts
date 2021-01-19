@@ -8,8 +8,6 @@ import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { UserStagingEntity } from './user-staging.entity';
-import { UserStagingRepository } from './user-staging.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -29,13 +27,15 @@ export class UserRepository extends Repository<User> {
         if (error.code === '23505') {
           //duplicate username
           this.logger.debug(
-            `Failed to create user "${
-              userStaging.username
-            }" due to duplication. User: ${JSON.stringify(userStaging)}`,
+            `Failed to create/insert user "${userStaging.username}" due to duplication.`,
             error.stack,
           );
           throw new ConflictException('Username already taken');
         } else {
+          this.logger.debug(
+            `Failed to create/insert user "${userStaging.username}"`,
+            error.stack,
+          );
           throw new InternalServerErrorException();
         }
         return false;
