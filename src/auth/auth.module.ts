@@ -9,6 +9,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { EmailModule } from '../email/email.module';
 import { EmailService } from '../email/email.service';
 import { UserStagingRepository } from './user-staging.repository';
+import { RequestModule } from '../request/request.module';
 
 @Module({
   imports: [
