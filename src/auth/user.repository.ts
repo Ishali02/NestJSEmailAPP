@@ -2,6 +2,7 @@ import { Repository, EntityRepository } from 'typeorm';
 import {
   ConflictException,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
@@ -12,6 +13,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+  private logger = new Logger('UserRepository');
+
   async signUpComplete(userStaging: UserStagingEntity): Promise<boolean> {
     if (userStaging) {
       const user = new User();
@@ -25,6 +28,12 @@ export class UserRepository extends Repository<User> {
       } catch (error) {
         if (error.code === '23505') {
           //duplicate username
+          this.logger.debug(
+            `Failed to create user "${
+              userStaging.username
+            }" due to duplication. User: ${JSON.stringify(userStaging)}`,
+            error.stack,
+          );
           throw new ConflictException('Username already taken');
         } else {
           throw new InternalServerErrorException();
@@ -43,6 +52,13 @@ export class UserRepository extends Repository<User> {
     if (user && (await user.validatePassword(password))) {
       return user.username;
     } else {
+      this.logger.debug(
+        `User "${
+          authCredentialsDto.username
+        } failed to login due to incorrect credentials. Data: ${JSON.stringify(
+          authCredentialsDto,
+        )}"`,
+      );
       return null;
     }
   }

@@ -6,10 +6,13 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import {
   ConflictException,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 
 @EntityRepository(UserStagingEntity)
 export class UserStagingRepository extends Repository<UserStagingEntity> {
+  private logger = new Logger('UserStagingRepository');
+
   async signUpVerification(
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<boolean> {
@@ -27,8 +30,20 @@ export class UserStagingRepository extends Repository<UserStagingEntity> {
     } catch (error) {
       if (error.code === '23505') {
         //duplicate username
+        this.logger.debug(
+          `Failed to send mail user "${
+            authCredentialsDto.username
+          }" for verification due to duplication. User: ${JSON.stringify(
+            authCredentialsDto,
+          )}`,
+          error.stack,
+        );
         throw new ConflictException('Username already exists');
       } else {
+        this.logger.debug(
+          `Failed to send mail to verify User ${authCredentialsDto.username}`,
+          error.stack,
+        );
         throw new InternalServerErrorException();
       }
       return false;

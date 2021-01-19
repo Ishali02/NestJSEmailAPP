@@ -5,6 +5,7 @@ import {
   ValidationPipe,
   Param,
   Get,
+  Logger,
 } from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
@@ -13,6 +14,7 @@ import { ResponseDto } from './dto/response.dto';
 
 @Controller('auth')
 export class AuthController {
+  private logger = new Logger('AuthController');
   constructor(
     private authService: AuthService,
     private emailService: EmailService,
@@ -22,7 +24,13 @@ export class AuthController {
   signUp(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<ResponseDto> {
-    console.log(JSON.stringify(ResponseDto));
+    this.logger.verbose(
+      `User "${
+        authCredentialsDto.username
+      } is signing up for email verification". SignUp Data: ${JSON.stringify(
+        authCredentialsDto,
+      )}`,
+    );
     return this.authService.signUp(authCredentialsDto);
   }
 
@@ -33,6 +41,7 @@ export class AuthController {
 
   @Get('/:username')
   signUpComplete1(@Param('username') username: string) {
+    this.logger.verbose(`User ${username}  email verified.`);
     return this.authService.signUpComplete(username);
   }
 
@@ -40,6 +49,7 @@ export class AuthController {
   signIn(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
+    this.logger.verbose(`User "${authCredentialsDto.username}" logged in`);
     return this.authService.signIn(authCredentialsDto);
   }
 }
