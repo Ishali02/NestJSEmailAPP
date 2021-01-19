@@ -20,6 +20,7 @@ export class UserRepository extends Repository<User> {
       user.username = userStaging.username;
       user.password = userStaging.password;
       user.salt = userStaging.salt;
+
       try {
         await user.save();
         return true;
