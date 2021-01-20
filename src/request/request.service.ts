@@ -3,6 +3,7 @@ import { RequestDataDto } from './dto/request-data.dto';
 import { RequestRepository } from './request.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from './request.entity';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class RequestService {
@@ -11,11 +12,11 @@ export class RequestService {
     private requestRepository: RequestRepository,
   ) {}
 
-  createRequest(requestDataDto: RequestDataDto) {
-    return this.requestRepository.createRequest(requestDataDto);
+  createRequest(requestDataDto: RequestDataDto, user: User) {
+    return this.requestRepository.createRequest(requestDataDto, user);
   }
 
-  getRequests(): Promise<Request[]> {
-    return this.requestRepository.getRequests();
+  getRequests(user: User): Promise<Request[]> {
+    return this.requestRepository.getRequests(user);
   }
 }

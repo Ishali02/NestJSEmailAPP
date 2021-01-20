@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from './role.enum';
+import { Request } from '../request/request.entity';
 
 @Entity()
 @Unique(['username'])
@@ -34,6 +35,9 @@ export class User extends BaseEntity {
     default: Role.EMPLOYEE,
   })
   role: Role;
+
+  @OneToMany((type) => Request, (request) => request.user, { eager: true })
+  requests: Request;
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
