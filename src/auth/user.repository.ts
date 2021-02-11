@@ -1,4 +1,4 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, getRepository } from 'typeorm';
 import {
   ConflictException,
   InternalServerErrorException,
@@ -15,7 +15,7 @@ export class UserRepository extends Repository<User> {
 
   async signUpComplete(userStaging: UserStagingEntity): Promise<boolean> {
     if (userStaging) {
-      const user = new User();
+      const user = this.create();
       user.fullName = userStaging.fullName;
       user.username = userStaging.username;
       user.password = userStaging.password;
@@ -31,13 +31,13 @@ export class UserRepository extends Repository<User> {
             `Failed to create/insert user "${userStaging.username}" due to duplication.`,
             error.stack,
           );
-          throw new ConflictException('Username already taken');
+          // throw new ConflictException('Username already taken');
         } else {
           this.logger.debug(
             `Failed to create/insert user "${userStaging.username}"`,
             error.stack,
           );
-          throw new InternalServerErrorException();
+          //throw new InternalServerErrorException();
         }
         return false;
       }
@@ -48,7 +48,8 @@ export class UserRepository extends Repository<User> {
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<string> {
     const { username, password } = authCredentialsDto;
-    const user = await this.findOne({ username });
+    const user = await getRepository(User).findOne({ username });
+    //const user = await this.findOne({ username });
 
     if (user && (await user.validatePassword(password))) {
       return user.username;

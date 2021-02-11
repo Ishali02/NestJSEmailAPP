@@ -13,11 +13,16 @@ export class RequestController {
 
   @Post()
   createRequest(@GetUser() user: User, @Body() requestDataDto: RequestDataDto) {
-    this.requestService.createRequest(requestDataDto, user);
+    return this.requestService.createRequest(requestDataDto, user);
   }
 
   @Get()
   getRequests(@GetUser() user: User): Promise<Request[]> {
     return this.requestService.getRequests(user);
+  }
+
+  @Get('/data')
+  getHomePageData() {
+    return this.requestService.getHomePageData();
   }
 }

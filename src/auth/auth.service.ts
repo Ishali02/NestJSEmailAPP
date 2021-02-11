@@ -7,6 +7,8 @@ import { JwtPayload } from './jwt-payload.interface';
 import { UserStagingRepository } from './user-staging.repository';
 import { EmailService } from '../email/email.service';
 import { ResponseDto } from './dto/response.dto';
+import { getRepository, Transaction } from 'typeorm';
+import { UserStagingEntity } from './user-staging.entity';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +17,7 @@ export class AuthService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
+    @InjectRepository(UserStagingRepository)
     private userStagingRepository: UserStagingRepository,
     private emailService: EmailService,
     private jwtService: JwtService,

@@ -3,26 +3,26 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
+  JoinColumn,
 } from 'typeorm';
 import { User } from '../auth/user.entity';
+import { Software } from './software.entity';
 
 @Entity()
 export class Request extends BaseEntity {
   @PrimaryGeneratedColumn()
   requestId: number;
 
-  @Column()
-  managerId: number;
+  @ManyToOne((type) => User, (manager) => manager.id)
+  manager: number;
 
-  @Column()
-  itTeamId: number;
+  @ManyToOne((type) => User, (itTeam) => itTeam.id)
+  itTeam: number;
 
-  @Column()
-  softwareTeamId: number;
-
-  @Column()
-  swId: number;
+  @ManyToOne((type) => User, (softwareTeam) => softwareTeam.id)
+  softwareTeam: number;
 
   @Column()
   reqDate: Date;
@@ -38,4 +38,8 @@ export class Request extends BaseEntity {
 
   @Column()
   userId: number;
+
+  @ManyToOne((type) => Software, (sw) => sw.id)
+  @JoinColumn()
+  sw: number;
 }

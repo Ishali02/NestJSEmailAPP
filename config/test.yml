@@ -1,0 +1,7 @@
+db:
+  host: 'localhost'
+  username: 'postgres'
+  password: 'root'
+  database: 'emailApp_test'
+  dropSchema: true
+  synchronize: true

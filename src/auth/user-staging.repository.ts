@@ -38,7 +38,7 @@ export class UserStagingRepository extends Repository<UserStagingEntity> {
           )}`,
           error.stack,
         );
-        throw new ConflictException('Username already exists');
+        //throw new ConflictException('Username already exists');
       } else {
         this.logger.debug(
           `Failed to send mail to verify User ${authCredentialsDto.username}`,

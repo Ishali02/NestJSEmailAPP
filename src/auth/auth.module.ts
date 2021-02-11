@@ -10,6 +10,8 @@ import { EmailModule } from '../email/email.module';
 import { EmailService } from '../email/email.service';
 import { UserStagingRepository } from './user-staging.repository';
 import { RequestModule } from '../request/request.module';
+import { UserStagingEntity } from './user-staging.entity';
+import { User } from './user.entity';
 
 @Module({
   imports: [
@@ -25,6 +27,6 @@ import { RequestModule } from '../request/request.module';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, EmailService],
-  exports: [JwtStrategy, PassportModule],
+  exports: [JwtStrategy, PassportModule, JwtModule],
 })
 export class AuthModule {}

@@ -1,12 +1,17 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import * as config from 'config';
 
+const dbConfig = config.get('db');
+console.log(dbConfig.get('database'));
 export const typeOrmConfig: TypeOrmModuleOptions = {
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'root',
-  database: 'emailApp',
+  type: dbConfig.type,
+  host: dbConfig.host,
+  port: dbConfig.port,
+  username: dbConfig.username,
+  password: dbConfig.password,
+  database: dbConfig.database,
+  dropSchema: dbConfig.dropSchema,
+  keepConnectionAlive: dbConfig.keepConnectionAlive,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   synchronize: true,
 };

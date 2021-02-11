@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Software extends BaseEntity {
   @PrimaryGeneratedColumn()
-  swId: number;
+  id: number;
 
   @Column()
   swName: string;
