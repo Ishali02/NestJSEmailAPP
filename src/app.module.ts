@@ -18,7 +18,7 @@ import { UserRepository } from './auth/user.repository';
     AuthModule,
     EmailModule,
     RequestModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule,
     JwtModule.register({
       secret: 'topSecret51',
       signOptions: {

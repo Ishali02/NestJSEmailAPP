@@ -21,7 +21,7 @@ export class EmailService {
         html:
           '<b>welcome</b></br><p>Thanks for registration' +
           'Click the below link to verify the email</p><br/><br/>' +
-          "<a target='_blank' href='http://localhost:3000/auth/" +
+          "<a target='_blank' href='http://localhost:3001/auth/" +
           authCredentialsDto.username +
           "'>Click here </a>", // HTML body content
       })

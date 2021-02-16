@@ -4,30 +4,18 @@ import { EmailService } from '../email/email.service';
 import { UserStagingRepository } from './user-staging.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from './user.repository';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { EmailModule } from '../email/email.module';
 import { PassportModule } from '@nestjs/passport';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { UserStagingEntity } from './user-staging.entity';
-import { AuthModule } from './auth.module';
 import { typeOrmConfig } from '../config/typeorm.config';
-import {
-  getConnection,
-  getCustomRepository,
-  getRepository,
-  Repository,
-} from 'typeorm';
-import {
-  initialiseTestTransactions,
-  runInTransaction,
-} from 'typeorm-test-transactions';
+import { getCustomRepository, getRepository } from 'typeorm';
 
 describe('The AuthenticationService', () => {
   let emailService;
   let authenticationService: AuthService;
-  let userStagingRepo: UserStagingRepository;
-  let userRepo: UserRepository;
   const mockEmailService = () => ({
     example: jest.fn(() => 'success'),
   });
@@ -57,19 +45,15 @@ describe('The AuthenticationService', () => {
     }).compile();
     authenticationService = await module.get<AuthService>(AuthService);
     emailService = await module.get<EmailService>(EmailService);
-    // userStagingRepo = await module.get<UserStagingRepository>(
-    //   UserStagingRepository,
-    // );
-    // userRepo = await module.get<UserRepository>(UserRepository);
   });
 
   describe('Auth Service', () => {
     let authDto: AuthCredentialsDto;
     beforeEach(() => {
       authDto = {
-        username: 'pqr4@gmail.com',
-        password: 'PQR@123456',
-        fullName: 'ABC POQ',
+        username: 'abc1234@gmail.com',
+        password: 'ABC@123456',
+        fullName: 'ABC DEF',
       };
     });
     it('New user signing in with email verification sent', async (done) => {
